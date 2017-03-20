@@ -3,13 +3,15 @@ var router = express.Router();
 var passport = require('../passport');
 var users = require('../users')
 
-router.get('/login', function(req, res, next) {
+router.get('/', function(req, res, next) {
   if (req.isAuthenticated())
   {
+    console.log("user authenticated")
     res.redirect('/dashboard');
     return;
   }
-  res.render('index', { title: 'My Dashboard App' });
+  console.log("user not authenticated")
+  res.send();
 });
 
 router.post('/register', function (req, res, next) {
@@ -47,7 +49,7 @@ router.get('/dashboard', function (req, res, next) {
     return;
   }
   // req.user will be the value from deserializeUser
-  res.render('dashboard', { user: req.user })
+  res.json({user:req.user})
 });
 
 module.exports = router
