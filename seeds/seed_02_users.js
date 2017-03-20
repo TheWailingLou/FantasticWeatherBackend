@@ -1,7 +1,7 @@
 exports.seed = (knex, Promise) => {
-  return knex('user').del()
+  return knex('username').del()
     .then( () => {
-      return knex('user').insert([
+      return knex('username').insert([
         {email: 'faisonusmc@gmail.com' , password: 'lane'},
         {email: 'torrepaul@gmail.com', password: 'paul'},
         {email: 'louisemail@gmail.com', password: 'louis'},
