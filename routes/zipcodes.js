@@ -6,7 +6,7 @@ function Zipcode() {
   return knex('zipcode')
 }
 
-// http GET localhost:8000/users
+// http GET localhost:8000/zipcodes
 router.get('/', (req,res) => {
   Zipcode().select()
   .then( result => {
@@ -21,6 +21,19 @@ router.get('/', (req,res) => {
 router.get('/:id', (req,res) => {
   Zipcode().select().where('id',req.params.id)
   .then ( result => {
+    res.json(result)
+  })
+  .catch( result => {
+    res.status(404)
+  })
+})
+
+// http POST localhost:8000/zipcodes id=#####
+router.post('/', (req,res) => {
+  Zipcode().insert({
+    id: req.body.id
+  },'id')
+  .then( result => {
     res.json(result)
   })
   .catch( result => {
