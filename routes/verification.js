@@ -16,14 +16,19 @@ router.get('/', function(req, res, next) {
 
 router.post('/register', function (req, res, next) {
   // Add the user to our data store
-  var success = users.add(req.body.username, req.body.password);
-  if (!success)
-  {
-    next(new Error('User could not be created.'));
-    return;
-  }
-  // Send user to login page
-  res.redirect('/');
+  // console.log(req.body)
+  // var success = false;
+  users.add(req.body.email, req.body.password).then(userAdded => {
+    console.log(userAdded)
+    if (!userAdded[0]) {
+      console.log("user was not added")
+      next(new Error('User could not be created.'));
+      return;
+    } else {
+      console.log("user was created!")
+      res.redirect('/');
+    }
+  });
 })
 
 // This route will authenticate a user and create a session.
@@ -31,7 +36,7 @@ router.post('/register', function (req, res, next) {
 // redirect to /dashboard,
 // and req.isAuthenticated() will return true
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: '/userHome',
     failureRedirect: '/'
   })
 );
@@ -42,7 +47,7 @@ router.get('/logout', function (req, res) {
   res.redirect('/');
 });
 
-router.get('/dashboard', function (req, res, next) {
+router.get('/userHome', function (req, res, next) {
   // Determine if the user is authorized to view the page
   if (!req.isAuthenticated()) {
     res.redirect('/');

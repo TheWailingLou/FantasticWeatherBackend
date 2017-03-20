@@ -1,52 +1,62 @@
-var bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt")
+const knex = require('./db/knex')
 
-var users = []
+// var users = []
 var id = 0
 
 function hashPassword (password)
 {
   return bcrypt.hashSync(password, 10)
 }
+// console.log(hashPassword("blah"))
 
-function findUser (username)
+function findUser (useremail)
 {
-  for (var i=0; i<users.length; i++)
-  {
-    var user = users[i]
-    if (user.username === username)
+  return knex('username').where('email', useremail)
+}
+
+function authenticateUser (useremail, password)
+{
+  findUser(useremail).then(user => {
+    let response;
+    if (!user)
     {
-      return user
+      response = false
+    } else {
+      response = bcrypt.compareSync(password, user.password);
     }
-  }
-  return
+    return Promise.all({
+      response: response
+    })
+  })
 }
 
-function authenticateUser (username, password)
+function addUser (newUserEmail, password)
 {
-  var user = findUser(username)
-  if (!user)
+  let response;
+  if (!newUserEmail || !password)
   {
-    return false
-  }
-  return bcrypt.compareSync(password, user.passwordHash)
-}
+    // console.log("a field wasn't filled in")
+    return {
+      response: false
+    }
+  } else {
+    return findUser(newUserEmail).then(userExists => {
+      if (userExists[0]) {
+        // console.log("does it make it to here?", userExists)
+        return false
+      } else {
+        // console.log("what about here??");
+        var user = {
+          email: newUserEmail,
+          password: hashPassword(password)
+        }
+        return knex('username').insert(user, 'email')
+      }
 
-function addUser (username, password)
-{
-  if (!username || !password)
-  {
-    return false
+    })
   }
-  if (findUser(username))
-  {
-    return false
-  }
-  var user = {
-    username: username,
-    passwordHash: hashPassword(password),
-  }
-  users.push(user)
-  return true
+
 }
 
 module.exports = {
