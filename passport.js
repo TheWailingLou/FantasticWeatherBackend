@@ -1,26 +1,29 @@
 var passport = require("passport")
 var Local = require("passport-local")
 var users = require("./users")
-passport.use(new Local(function (username, password, done)
+passport.use(new Local(function (userEmail, password, done)
 {
-  var verified = users.authenticate(username, password)
-  if (!verified)
-  {
-    done(null, false)
-  }
-  var user = users.find(username)
-  done(null, user)
+  users.authenticate(userEmail, password).then(verified => {
+    if (!verified.response){
+      done(null, false)
+    } else {
+      users.find(userEmail).then(user => {
+        done(null, user)
+      })
+    }
+  })
 }))
 
 passport.serializeUser(function (user, done)
 {
-  done(null, user.username)
+  done(null, user.userEmail)
 })
 
-passport.deserializeUser(function (username, done)
+passport.deserializeUser(function (userEmail, done)
 {
-  var user = users.find(username)
-  done(null, user)
+  users.find(userEmail).then(function(user){
+    done(null, user)
+  })
 })
 
 module.exports = passport

@@ -1,4 +1,5 @@
-var knex = require('../db/knex');
-function User() {
-  return knex('user');
-}
+const express = require('express')
+const router = express.Router()
+const knex = require('../db/knex')
+
+router.get('')
