@@ -29,6 +29,7 @@ router.get('/:id', (req,res) => {
 })
 
 // http POST localhost:8000/locations name='' longitude=# latitude=# zipcode_id=#####
+// This route creates a new zip code and location if the requested zip code is not found. If it is found, then a new location is created, but a new zip code is not created.
 router.post('/', (req,res) => {
   Zipcode().where('id',req.body.zipcode_id).select()
   .then( result => {
@@ -48,11 +49,14 @@ router.post('/', (req,res) => {
       longitude: req.body.longitude,
       latitude: req.body.latitude,
       zipcode_id: result
-    },['name','longitude','latitude','zipcode_id'])
+    },['id','name','longitude','latitude','zipcode_id'])
     .then( result => {
       res.json(result)
     })
   })
 })
+
+// http DELETE localhost:8000/locations/:id
+
 
 module.exports = router
