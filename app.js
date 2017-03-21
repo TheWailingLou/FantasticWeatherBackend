@@ -16,18 +16,29 @@ const locations = require('./routes/locations.js');
 const zipcodes = require('./routes/zipcodes.js')
 const verification = require('./routes/verification.js')
 
+// app.use(function(req, res, next) {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next()
+// })
+
+app.use(cors())
+
 app.use(cookieParser())
 app.use(session({
   secret: process.env.SECRET,
   saveUninitialized: true,
   resave: false
 }))
-app.use(passport.initialize())
-app.use(passport.session())
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.static('public'))
-// app.use(cors())
+
 app.use('/idealWeather', idealWeather);
 app.use('/locations', locations)
 // app.use('/users', users)

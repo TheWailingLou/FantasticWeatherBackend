@@ -1,10 +1,12 @@
 var passport = require("passport")
 var Local = require("passport-local")
 var users = require("./users")
-passport.use(new Local(function (userEmail, password, done)
+passport.use(new Local({"usernameField": "email"}, function (userEmail, password, done)
 {
+  // console.log("is it logging here?????")
   users.authenticate(userEmail, password).then(verified => {
-    if (!verified.response){
+    // console.log(verified)
+    if (!verified){
       done(null, false)
     } else {
       users.find(userEmail).then(user => {
@@ -16,7 +18,9 @@ passport.use(new Local(function (userEmail, password, done)
 
 passport.serializeUser(function (user, done)
 {
-  done(null, user.userEmail)
+  // console.log("thing")
+  // console.log(user)
+  done(null, user)
 })
 
 passport.deserializeUser(function (userEmail, done)

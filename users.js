@@ -17,17 +17,18 @@ function findUser (useremail)
 
 function authenticateUser (useremail, password)
 {
-  findUser(useremail).then(user => {
+  return findUser(useremail).then(user => {
     let response;
-    if (!user)
+    if (!user[0])
     {
       response = false
     } else {
-      response = bcrypt.compareSync(password, user.password);
+      // console.log(user[0].password)
+      response = bcrypt.compareSync(password, user[0].password);
+      console.log(response)
     }
-    return Promise.all({
-      response: response
-    })
+
+    return response
   })
 }
 
@@ -43,10 +44,8 @@ function addUser (newUserEmail, password)
   } else {
     return findUser(newUserEmail).then(userExists => {
       if (userExists[0]) {
-        // console.log("does it make it to here?", userExists)
         return false
       } else {
-        // console.log("what about here??");
         var user = {
           email: newUserEmail,
           password: hashPassword(password)
