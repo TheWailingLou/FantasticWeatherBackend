@@ -17,7 +17,7 @@ router.get('/', (req,res) => {
   })
 })
 
-// http GET localhost:8000/:id
+// http GET localhost:8000/zipcodes/:id
 router.get('/:id', (req,res) => {
   Zipcode().select().where('id',req.params.id)
   .then ( result => {
@@ -40,5 +40,7 @@ router.post('/', (req,res) => {
     res.status(404)
   })
 })
+
+// http DELETE localhost:8000/zipcodes/:id
 
 module.exports = router
