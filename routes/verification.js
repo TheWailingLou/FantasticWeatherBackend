@@ -21,11 +21,11 @@ router.post('/register', function (req, res, next) {
   users.add(req.body.email, req.body.password).then(userAdded => {
     console.log(userAdded)
     if (!userAdded[0]) {
-      console.log("user was not added")
+      // console.log("user was not added")
       next(new Error('User could not be created.'));
       return;
     } else {
-      console.log("user was created!")
+      // console.log("user was created!")
       res.redirect('/');
     }
   });
