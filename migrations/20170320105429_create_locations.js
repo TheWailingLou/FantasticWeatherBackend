@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     table.string('name')
     table.decimal('longitude')
     table.decimal('latitude')
-    table.integer('zipcode_id').references('zipcode.id').notNullable
+    table.integer('zipcode_id').references('zipcode.id').notNullable().onDelete('cascade')
   })
 };
 
