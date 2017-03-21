@@ -51,7 +51,7 @@ function addUser (newUserEmail, password)
           email: newUserEmail,
           password: hashPassword(password)
         }
-        return knex('username').insert(user, 'email')
+        return knex('username').insert(user, 'password')
       }
 
     })
