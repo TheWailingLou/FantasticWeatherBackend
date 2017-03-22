@@ -25,7 +25,7 @@ function authenticateUser (useremail, password)
     } else {
       // console.log(user[0].password)
       response = bcrypt.compareSync(password, user[0].password);
-      console.log(response)
+      // console.log(response)
     }
 
     return response
