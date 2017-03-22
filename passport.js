@@ -3,8 +3,11 @@ var Local = require("passport-local")
 var users = require("./users")
 passport.use(new Local({"usernameField": "email"}, function (userEmail, password, done)
 {
-  // console.log("is it logging here?????")
+  // console.log("loggin here.")
+  // console.log(userEmail, password)
   users.authenticate(userEmail, password).then(verified => {
+
+    // console.log('verified?')
     // console.log(verified)
     if (!verified){
       done(null, false)
@@ -19,15 +22,19 @@ passport.use(new Local({"usernameField": "email"}, function (userEmail, password
 passport.serializeUser(function (user, done)
 {
   // console.log("thing")
-  // console.log(user)
-  done(null, user)
+  console.log("serializeUser called")
+  console.log(user)
+  done(null, user[0].email)
 })
 
-passport.deserializeUser(function (userEmail, done)
-{
-  users.find(userEmail).then(function(user){
-    done(null, user)
-  })
+passport.deserializeUser(function (user, done) {
+  console.log("")
+  console.log("deserialize user called")
+  console.log("")
+  users.find(user[0]).then(function(blah){
+    done(null, blah)
+  }).catch()
 })
+
 
 module.exports = passport
