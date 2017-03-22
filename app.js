@@ -36,8 +36,9 @@ app.use(bodyParser.urlencoded({extended: false}))
 //   next()
 // })
 
+var whitelist = ['http://localhost:5000', 'https://fantasticweatherfrontend.firebaseapp.com']
 
-app.use(cors({credentials: true, origin: 'http://localhost:5000'}))
+app.use(cors({credentials: true, origin: whitelist}))
 
 
 app.use(cookieParser())
