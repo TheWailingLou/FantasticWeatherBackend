@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
     return;
   }
   console.log("user not authenticated")
-  res.send();
+  res.status(403).send();
 });
 
 router.post('/register', function (req, res, next) {
@@ -39,8 +39,13 @@ router.post('/register', function (req, res, next) {
 // redirect to /dashboard,
 // and req.isAuthenticated() will return true
 router.post('/login', passport.authenticate('local'), function(req, res){
-  console.log("is it authenticating??")
-  res.status(200).send("You have been successful")
+  console.log("is it authenticating?? USER:")
+  console.log(req.user)
+  req.logIn(req.user, function (err) { // <-- Log user in
+    //  return res.redirect('/');
+     res.status(200).send("You have been successful")
+  });
+
 });
 
 router.get('/logout', function (req, res) {
@@ -49,10 +54,15 @@ router.get('/logout', function (req, res) {
   res.status(200).send();
 });
 
-router.get('/userHome', function (req, res, next) {
+router.get('/verify', function (req, res, next) {
   // Determine if the user is authorized to view the page
+  console.log("is authenticated? ? ! ?")
+  console.log(req.cookies)
+  console.log(req.user)
+  console.log("session", req.session)
+  console.log(req.isAuthenticated())
   if (!req.isAuthenticated()) {
-    res.status(200).send();
+    res.status(403).send();
     return;
   }
   // req.user will be the value from deserializeUser
