@@ -11,10 +11,10 @@ function Zipcode() { return knex('zipcode') }
 router.get('/', (req,res) => {
   Location().select()
   .then( result => {
-    res.json(result)
+    res.json(result).send()
   })
   .catch( result => {
-    res.status(404)
+    res.status(404).send()
   })
 })
 
@@ -22,10 +22,10 @@ router.get('/', (req,res) => {
 router.get('/:id', (req,res) => {
   Location().select().where('id',req.params.id)
   .then( result => {
-    res.json(result)
+    res.json(result).send()
   })
   .catch( result => {
-    res.status(404)
+    res.status(404).send()
   })
 })
 
@@ -54,7 +54,7 @@ router.post('/', (req,res) => {
       zipcode_id: result
     },['id','name','longitude','latitude','zipcode_id'])
     .then( result => {
-      res.json(result)
+      res.json(result).send()
     })
   })
 })
@@ -67,7 +67,7 @@ router.put('/:id', (req,res) => {
     name: req.body.name
   },['id','name','longitude','latitude','zipcode_id'])
   .then( result => {
-    res.json(result)
+    res.json(result).send()
   })
 })
 
@@ -77,7 +77,7 @@ router.put('/:id', (req,res) => {
 router.delete('/:id', (req,res) => {
   Location().where('id',req.params.id).del()
   .then( result => {
-    res.json(result)
+    res.json(result).send()
   })
 })
 
