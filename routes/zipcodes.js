@@ -6,6 +6,8 @@ function Zipcode() {
   return knex('zipcode')
 }
 
+//********************* READ *********************//
+
 // http GET localhost:8000/zipcodes
 router.get('/', (req,res) => {
   Zipcode().select()
@@ -17,7 +19,7 @@ router.get('/', (req,res) => {
   })
 })
 
-// http GET localhost:8000/:id
+// http GET localhost:8000/zipcodes/:id
 router.get('/:id', (req,res) => {
   Zipcode().select().where('id',req.params.id)
   .then ( result => {
@@ -28,7 +30,10 @@ router.get('/:id', (req,res) => {
   })
 })
 
+//********************* CREATE *********************//
+
 // http POST localhost:8000/zipcodes id=#####
+// THIS ROUTE SHOULD NOT BE NEEDED SINCE ZIP CODES ARE CREATED WHEN A NEW LOCATION IS ADDED
 router.post('/', (req,res) => {
   Zipcode().insert({
     id: req.body.id
@@ -38,6 +43,16 @@ router.post('/', (req,res) => {
   })
   .catch( result => {
     res.status(404)
+  })
+})
+
+//********************* DELETE *********************//
+
+// http DELETE localhost:8000/zipcodes/:id
+router.delete('/:id', (req,res) => {
+  Zipcode().where('id',req.params.id).del()
+  .then( result => {
+    res.json(result)
   })
 })
 

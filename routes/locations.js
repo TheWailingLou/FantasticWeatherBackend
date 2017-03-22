@@ -5,6 +5,7 @@ var knex = require('../db/knex')
 function Location() { return knex('location') }
 function Zipcode() { return knex('zipcode') }
 
+//********************* READ *********************//
 
 // http GET localhost:8000/locations
 router.get('/', (req,res) => {
@@ -28,7 +29,10 @@ router.get('/:id', (req,res) => {
   })
 })
 
+//********************* CREATE *********************//
+
 // http POST localhost:8000/locations name='' longitude=# latitude=# zipcode_id=#####
+// This route creates a new zip code and location if the requested zip code is not found. If it is found, then a new location is created, but a new zip code is not created.
 router.post('/', (req,res) => {
   Zipcode().where('id',req.body.zipcode_id).select()
   .then( result => {
@@ -48,10 +52,32 @@ router.post('/', (req,res) => {
       longitude: req.body.longitude,
       latitude: req.body.latitude,
       zipcode_id: result
-    },['name','longitude','latitude','zipcode_id'])
+    },['id','name','longitude','latitude','zipcode_id'])
     .then( result => {
       res.json(result)
     })
+  })
+})
+
+//********************* UPDATE *********************//
+
+// http PUT localhost:8000/locations/:id name=''
+router.put('/:id', (req,res) => {
+  Location().where('id', req.params.id).update({
+    name: req.body.name
+  },['id','name','longitude','latitude','zipcode_id'])
+  .then( result => {
+    res.json(result)
+  })
+})
+
+//********************* DELETE *********************//
+
+// http DELETE localhost:8000/locations/:id
+router.delete('/:id', (req,res) => {
+  Location().where('id',req.params.id).del()
+  .then( result => {
+    res.json(result)
   })
 })
 
