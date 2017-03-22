@@ -22,8 +22,8 @@ passport.use(new Local({"usernameField": "email"}, function (userEmail, password
 passport.serializeUser(function (user, done)
 {
   // console.log("thing")
-  console.log("serializeUser called")
-  console.log(user)
+  // console.log("serializeUser called")
+  // console.log(user)
   done(null, user[0].email)
 })
 

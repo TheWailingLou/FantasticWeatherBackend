@@ -6,21 +6,21 @@ var users = require('../users')
 router.get('/', function(req, res, next) {
   if (req.isAuthenticated())
   {
-    console.log("user authenticated")
+    // console.log("user authenticated")
     res.status(200).send()
     return;
   }
-  console.log("user not authenticated")
+  // console.log("user not authenticated")
   res.status(403).send();
 });
 
 router.post('/register', function (req, res, next) {
-  console.log("register sent to")
+  // console.log("register sent to")
   // Add the user to our data store
   // console.log(req.body)
   // var success = false;
   users.add(req.body.email, req.body.password).then(userAdded => {
-    console.log(userAdded)
+    // console.log(userAdded)
     if (!userAdded[0]) {
       // console.log("user was not added")
       res.status(500).send()
@@ -39,10 +39,12 @@ router.post('/register', function (req, res, next) {
 // redirect to /dashboard,
 // and req.isAuthenticated() will return true
 router.post('/login', passport.authenticate('local'), function(req, res){
-  console.log("is it authenticating?? USER:")
-  console.log(req.user)
+  // console.log("is it authenticating?? USER:")
+  // console.log(req.user)
+  // req.session.foo = "bar";
   req.logIn(req.user, function (err) { // <-- Log user in
     //  return res.redirect('/');
+    req.session.save();
      res.status(200).send("You have been successful")
   });
 
@@ -56,10 +58,10 @@ router.get('/logout', function (req, res) {
 
 router.get('/verify', function (req, res, next) {
   // Determine if the user is authorized to view the page
-  console.log("is authenticated? ? ! ?")
-  console.log(req.cookies)
-  console.log(req.user)
-  console.log("session", req.session)
+  // console.log("is authenticated? ? ! ?")
+  // console.log(req.cookies)
+  // console.log(req.user)
+  // console.log("session", req.session)
   console.log(req.isAuthenticated())
   if (!req.isAuthenticated()) {
     res.status(403).send();
