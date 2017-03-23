@@ -45,9 +45,8 @@ router.post('/login', passport.authenticate('local'), function(req, res){
   req.logIn(req.user, function (err) { // <-- Log user in
     //  return res.redirect('/');
     req.session.save();
-     res.status(200).send("You have been successful")
+    res.status(200).send("You have been successful")
   });
-
 });
 
 router.get('/logout', function (req, res) {
@@ -68,6 +67,7 @@ router.get('/verify', function (req, res, next) {
     return;
   }
   // req.user will be the value from deserializeUser
+  console.log(req.user)
   res.json({user:req.user})
 });
 

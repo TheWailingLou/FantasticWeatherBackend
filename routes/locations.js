@@ -1,14 +1,47 @@
 const express = require('express')
 const router = express.Router()
-var knex = require('../db/knex')
+const passport = require('../passport');
+const users = require('../users')
+const knex = require('../db/knex')
+// const verify = require('./verification.js')
 
 function Location() { return knex('location') }
 function Zipcode() { return knex('zipcode') }
 
+console.log("locations accessed")
+
+router.use(function (req, res, next) {
+  // console.log(req)
+  console.log("USER Auth:");
+  console.log(req.user)
+  // console.log(req.isAuthenticated())
+  if (!req.isAuthenticated()) {
+    res.status(401).send();
+    return;
+  }
+  next()
+});
+
 //********************* READ *********************//
+
+
+
 
 // http GET localhost:8000/locations
 router.get('/', (req,res) => {
+  console.log('user:')
+  console.log(req.user)
+  Location().select()
+  .then( result => {
+    res.json(result).send()
+  })
+  .catch( result => {
+    res.status(404).send()
+  })
+})
+
+router.get('/user', (req,res) => {
+
   Location().select()
   .then( result => {
     res.json(result).send()
@@ -20,6 +53,7 @@ router.get('/', (req,res) => {
 
 // http GET localhost:8000/locations/:id
 router.get('/:id', (req,res) => {
+
   Location().select().where('id',req.params.id)
   .then( result => {
     res.json(result).send()
@@ -50,7 +84,12 @@ router.post('/', (req,res) => {
   // }
   //
   //   .then( (result) => {
-  console.log(req.body)
+  console.log("");
+  console.log("");
+  console.log("POST locations/ ");
+  console.log("");
+  // console.log(req.body)
+  // console.log(req.user)
   if (req.body.name && req.body.longitude && req.body.latitude) {
     Location().insert({
         name: req.body.name,
@@ -62,7 +101,7 @@ router.post('/', (req,res) => {
         res.status(201).json(result).send()
       })
   } else {
-    res.status(407).send("location object: {name:name, longitude:longitude, latitude:latitude}")
+    res.status(400).send("location object: {name, longitude, latitude}")
   }
 
 })

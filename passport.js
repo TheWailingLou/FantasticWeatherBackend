@@ -31,7 +31,7 @@ passport.deserializeUser(function (user, done) {
   console.log("")
   console.log("deserialize user called")
   console.log("")
-  users.find(user[0]).then(function(blah){
+  users.find(user).then(function(blah){
     done(null, blah)
   }).catch()
 })

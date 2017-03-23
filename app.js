@@ -21,10 +21,13 @@ const app = express()
 var whitelist = ['https://fantasticweatherfrontend.firebaseapp.com', 'http://localhost:5000']
 
 app.use(cors({
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true,
   origin: whitelist
   // maxAge: 3600
 }))
+
+
 
 app.use(logger('dev'))
 app.use(bodyParser.json())
@@ -37,8 +40,8 @@ app.use(session({
   saveUninitialized: true,
   resave: false,
   cookie: {
-    maxAge: 3600,
-    // sameSite: 'lax',
+    // maxAge: 3600,
+    sameSite: 'lax',
     httpOnly: false,
     secure: false
   }
@@ -52,6 +55,16 @@ app.use(passport.initialize())
 app.use(passport.session())
 // app.use(express.static('public'))
 
+// app.use(function (req, res, next) {
+//   console.log("USER Auth:");
+//   console.log(req.user)
+//   if (!req.isAuthenticated()) {
+//     res.status(403).send();
+//     return;
+//   }
+//   next()
+// });
+
 app.use(function(req, res, next) {
   // console.log("");
   // // req.session.foo = "bar";
@@ -63,12 +76,6 @@ app.use(function(req, res, next) {
   next()
 })
 
-app.use('/idealWeather', idealWeather);
-app.use('/locations', locations)
-// app.use('/users', users)
-app.use('/zipcodes', zipcodes)
-app.use('/verification', verification)
-app.use('/mailgun', mailgun)
 
 app.use(function(err, req, res, next) {
   res.status(err.status || 500)
@@ -77,6 +84,15 @@ app.use(function(err, req, res, next) {
     error: err
   })
 })
+
+app.use('/idealWeather', idealWeather);
+app.use('/locations', locations)
+// app.use('/users', users)
+app.use('/zipcodes', zipcodes)
+app.use('/verification', verification)
+app.use('/mailgun', mailgun)
+
+
 
 app.listen(PORT, () => {
   console.log(`The Fantastic 3 + 1 is listening on PORT: ${PORT}`);
