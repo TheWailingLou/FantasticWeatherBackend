@@ -46,7 +46,7 @@ router.get('/user', (req,res) => {
     .join('ideal', 'username_id', 'username.id')
     .join('location', 'location_id', 'location.id')
     .where('username.email', req.user[0].email)
-    .select('location.name as name', 'location.longitude as longitude', 'location.latitude as latitude')
+    .select('location.name as name', 'location.longitude as longitude', 'location.latitude as latitude', 'location.id as id')
   .then( result => {
     res.json(result).send()
   })
