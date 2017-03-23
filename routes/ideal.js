@@ -8,6 +8,14 @@ function Ideal() {
 
 //********************* READ *********************//
 
+router.use(function (req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.status(403).send();
+    return;
+  }
+  next()
+});
+
 // http GET localhost:8000/idealWeather
 router.get('/', (req,res) => {
   Ideal().select()

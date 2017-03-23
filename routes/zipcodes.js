@@ -8,6 +8,14 @@ function Zipcode() {
 
 //********************* READ *********************//
 
+router.use(function (req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.status(403).send();
+    return;
+  }
+  next()
+});
+
 // http GET localhost:8000/zipcodes
 router.get('/', (req,res) => {
   Zipcode().select()
