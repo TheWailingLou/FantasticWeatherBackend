@@ -41,13 +41,18 @@ router.get('/', (req,res) => {
 })
 
 router.get('/user', (req,res) => {
-
-  Location().select()
+  console.log(req.user[0].email)
+  knex('username')
+    .join('ideal', 'username_id', 'username.id')
+    .join('location', 'location_id', 'location.id')
+    .where('username.email', req.user[0].email)
+    .select('location.name as name', 'location.longitude as longitude', 'location.latitude as latitude', 'location.id as id')
   .then( result => {
     res.json(result).send()
   })
-  .catch( result => {
-    res.status(404).send()
+  .catch( err => {
+    console.log(err)
+    res.status(500).send()
   })
 })
 
@@ -99,6 +104,47 @@ router.post('/', (req,res) => {
       },['id','name','longitude','latitude'])
       .then( result => {
         res.status(201).json(result).send()
+      })
+  } else {
+    res.status(400).send("location object: {name, longitude, latitude}")
+  }
+
+})
+
+router.post('/user', (req,res) => {
+  if (req.body.name && req.body.longitude && req.body.latitude) {
+    knex('location').insert({
+        name: req.body.name,
+        longitude: req.body.longitude,
+        latitude: req.body.latitude
+      }, 'id')
+      .then(locationId => {
+        knex('username')
+          .select('id as userId')
+          .where('email', req.user[0].email)
+          .then(userId => {
+            knex('ideal')
+              .insert({
+                username_id: userId[0].userId,
+                location_id: locationId[0]
+              })
+              .then(result => {
+                res.status(201).send()
+              })
+              .catch(err => {
+                console.log(err, "\n problem inserting into ideal")
+                res.status(500).send("problem inserting into ideal weather")
+              })
+          })
+          .catch(err => {
+
+            console.log(err, "\n problem getting id from user")
+            res.status(500).send("problem getting id from user")
+          })
+      })
+      .catch(err => {
+        console.log(err, "\n problem inserting into location table")
+        res.status(500).send("problem inserting into location")
       })
   } else {
     res.status(400).send("location object: {name, longitude, latitude}")
