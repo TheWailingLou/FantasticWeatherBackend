@@ -7,15 +7,13 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const passport = require('./passport')
-
+const mailgun = require('./routes/mailgun.js')
 const idealWeather = require('./routes/ideal.js')
 const locations = require('./routes/locations.js')
 const zipcodes = require('./routes/zipcodes.js')
 const verification = require('./routes/verification.js')
-
 const cors = require('cors')
 const pg = require('pg')
-
 const PORT = process.env.PORT || 8000
 const app = express()
 
@@ -70,6 +68,7 @@ app.use('/locations', locations)
 // app.use('/users', users)
 app.use('/zipcodes', zipcodes)
 app.use('/verification', verification)
+app.use('/mailgun', mailgun)
 
 app.use(function(err, req, res, next) {
   res.status(err.status || 500)
