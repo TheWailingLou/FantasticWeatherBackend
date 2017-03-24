@@ -62,7 +62,7 @@ knex('location').select()
                   var mail = {
                     to: email[0].email,
                     subject: `Weather update for ${location[0].name}`,
-                    text: `Weather is looking great for a hike tomorrow at ${location[0].name}! Temperature will reach a high of ${mailTemp} degrees and winds are looking to be at around ${mailWind} MPH with a ${mailRain}% chance of rain.`
+                    text: `Weather is looking great for a hike tomorrow at ${location[0].name}! Temperature will reach a high of ${mailTemp} degrees and winds are looking to be at around ${mailWind} MPH with a ${mailRain}% chance of rain. Please check out the website for further details: https://fantasticweatherfrontend.firebaseapp.com/`
                   }
                   console.log(mail);
                   return axios.post( `${server}/mailgun`, mail )
