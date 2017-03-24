@@ -43,7 +43,7 @@ app.use(session({
     // maxAge: 3600,
     sameSite: 'lax',
     httpOnly: false,
-    secure: false 
+    secure: false
   }
   // rolling: true
 
@@ -66,13 +66,13 @@ app.use(passport.session())
 // });
 
 app.use(function(req, res, next) {
-  // console.log("");
-  // // req.session.foo = "bar";
-  // console.log("cookie");
-  // console.log(req.cookies)
-  // console.log("")
-  // console.log(req.session)
-  // console.log("");
+  console.log("");
+  // req.session.foo = "bar";
+  console.log("cookie");
+  console.log(req.cookies)
+  console.log("")
+  console.log(req.session)
+  console.log("");
   next()
 })
 
