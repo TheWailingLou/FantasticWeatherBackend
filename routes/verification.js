@@ -39,8 +39,8 @@ router.post('/register', function (req, res, next) {
 // redirect to /dashboard,
 // and req.isAuthenticated() will return true
 router.post('/login', passport.authenticate('local'), function(req, res){
-  // console.log("is it authenticating?? USER:")
-  // console.log(req.user)
+  console.log("is it authenticating?? USER:")
+  console.log(req.user)
   // req.session.foo = "bar";
   req.logIn(req.user, function (err) { // <-- Log user in
     //  return res.redirect('/');
