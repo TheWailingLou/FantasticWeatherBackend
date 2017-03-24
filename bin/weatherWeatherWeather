@@ -2,9 +2,8 @@
 const axios = require('axios')
 const knex = require('../db/knex')
 const myKey = 'fd59c08b71d9a82c1248b5012aca9c44'
-// var heroku =
-var server = 'http://localhost:8000'
-// var server = 'https://fantastic-weather.herokuapp.com'
+// var server = 'http://localhost:8000'
+var server = 'https://fantastic-weather.herokuapp.com'
 
 knex('location').select()
 .then( result => {
