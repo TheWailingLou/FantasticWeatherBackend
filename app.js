@@ -43,7 +43,7 @@ app.use(session({
     // maxAge: 3600,
     sameSite: 'lax',
     httpOnly: false,
-    secure: false
+    // secure: true
   }
   // rolling: true
 
