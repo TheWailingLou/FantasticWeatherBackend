@@ -8,7 +8,7 @@ router.post('/', (req,res) => {
   var data = {
     from: 'Fantastic Weather! <faisonusmc@gmail.com>',
     to: req.body.to,
-    subject: 'Weather updates',
+    subject: req.body.subject,
     text: req.body.text
   }
   mailgun.messages().send(data, function (error, body) {
