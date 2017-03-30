@@ -1,4 +1,4 @@
-require('dotenv').config({path: 'path_to_env_file'})
+require('dotenv').config()
 
 const express = require('express')
 const path = require('path')
@@ -18,8 +18,8 @@ const PORT = process.env.PORT || 8000
 const app = express()
 
 
-var whitelist = ['https://fantasticweatherfrontend.firebaseapp.com', 'http://localhost:5000']
-
+// var whitelist = ['https://fantasticweatherfrontend.firebaseapp.com', 'http://localhost:8000', '*']
+var whitelist = 'http://localhost:8000'
 app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true,
@@ -53,7 +53,7 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
-// app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // app.use(function (req, res, next) {
 //   console.log("USER Auth:");
